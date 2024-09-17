@@ -1,9 +1,10 @@
-version: '3'
+name: anki
+
 services:
-  anki-sync-server:
+  sync-server:
     image: phbjdocker/anki-sync-server
     volumes:
-      - anki-sync-data:/home/anki/.syncserver
+      - sync-data:/home/anki
     ports:
       - 8080:8080
     environment:
@@ -11,4 +12,4 @@ services:
       - SYNC_USER1=${ANKI_USER}:${ANKI_PASSWORD}
     restart: always
 volumes:
-  anki-sync-data:
+  sync-data:
