@@ -9,7 +9,7 @@ env:
   anki_upstream_repo: ankitects/anki
   anki_upstream_branch: main
   anki_source_path: anki
-  docker_image_name: phbjdocker/anki-sync-server
+  docker_image_name: anki-sync-server
   docker_image_tag: weekly
 
 jobs:
@@ -34,6 +34,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ${{ env.anki_source_path }}
-          file: docs/syncserver/Dockerfile
+          file: ${{ env.anki_source_path }}/docs/syncserver/Dockerfile
           push: true
-          tags: ${{ env.docker_image_name }}:${{ env.docker_image_tag }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.docker_image_name }}:${{ env.docker_image_tag }}
