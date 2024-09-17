@@ -30,6 +30,13 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Get Anki Commit ID
+        id: get-anki-commit-id
+        run: |
+          cd ${{ env.anki_source_path }}
+          head_commit_id="$(git rev-list -1 HEAD)"
+          echo "The commit of HEAD is $head_commit_id"
+          echo "HEAD_COMMIT_ID=$head_commit_id" >> $GITHUB_OUTPUT
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -37,3 +44,5 @@ jobs:
           file: ${{ env.anki_source_path }}/docs/syncserver/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.docker_image_name }}:${{ env.docker_image_tag }}
+          build-args:
+            - ANKI_VERSION=trunk-${{ steps.get-anki-commit-id.outputs.HEAD_COMMIT_ID }}
