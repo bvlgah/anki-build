@@ -9,6 +9,7 @@ env:
   anki_upstream_repo: ankitects/anki
   anki_upstream_branch: main
   anki_source_path: anki
+  anki_sync_port: 8080
   docker_image_name: anki-sync-server
   docker_image_tag: weekly
 
@@ -46,4 +47,5 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.docker_image_name }}:${{ env.docker_image_tag }}
           build-args: |
-            ANKI_VERSION=trunk-${{ steps.get-anki-commit-id.outputs.HEAD_COMMIT_ID }}
+            ANKI_VERSION=${{ steps.get-anki-commit-id.outputs.HEAD_COMMIT_ID }}
+            SYNC_PORT=${{ env.anki_sync_port }}
