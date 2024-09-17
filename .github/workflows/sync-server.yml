@@ -10,11 +10,10 @@ on:
 env:
   anki_upstream_repo: ankitects/anki
   anki_source_path: anki
-  anki_sync_port: 8080
   docker_image_name: anki-sync-server
 
 jobs:
-  checkout:
+  build:
     name: Build
     runs-on: ubuntu-latest
     steps:
@@ -24,6 +23,8 @@ jobs:
           repository: ${{ env.anki_upstream_repo }}
           ref: ${{ github.event.inputs.version }}
           path: ${{ env.anki_source_path }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Login to Docker Hub
@@ -34,6 +35,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
+          platform: linux/amd64,linux/arm64
           context: ${{ env.anki_source_path }}
           file: ${{ env.anki_source_path }}/docs/syncserver/Dockerfile
           push: true
@@ -42,4 +44,3 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.docker_image_name }}:${{ github.event.inputs.version }}
           build-args: |
             ANKI_VERSION=${{ github.event.inputs.version }}
-            SYNC_PORT=${{ env.anki_sync_port }}
