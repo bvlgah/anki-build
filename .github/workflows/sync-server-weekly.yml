@@ -43,6 +43,7 @@ jobs:
           context: ${{ env.anki_source_path }}
           file: ${{ env.anki_source_path }}/docs/syncserver/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.docker_image_name }}:${{ env.docker_image_tag }}
-          build-args:
-            - ANKI_VERSION=trunk-${{ steps.get-anki-commit-id.outputs.HEAD_COMMIT_ID }}
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.docker_image_name }}:${{ env.docker_image_tag }}
+          build-args: |
+            ANKI_VERSION=trunk-${{ steps.get-anki-commit-id.outputs.HEAD_COMMIT_ID }}
