@@ -36,7 +36,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm64
-          context: ${{ env.anki_source_path }}
+          context: ${{ env.anki_source_path }}/docs/syncserver
           file: ${{ env.anki_source_path }}/docs/syncserver/Dockerfile
           push: true
           tags: |
